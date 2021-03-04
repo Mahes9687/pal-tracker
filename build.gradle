@@ -16,17 +16,23 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'mysql:mysql-connector-java'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 bootRun.environment([
         "WELCOME_MESSAGE": "Hello pal-tracker",
+        "MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE": "*",
+        "MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS": "always",
+        "MANAGEMENT_HEALTH_PROBES_ENABLED": true
 ])
 
 
 test.environment([
         "WELCOME_MESSAGE": "Hello from test",
+        "MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE": "*",
 ])
+
 
 test {
     useJUnitPlatform()
@@ -53,4 +59,8 @@ flyway {
 
 task testMigrate(type: FlywayMigrateTask) {
     url = testDbUrl
+}
+
+springBoot {
+    buildInfo()
 }
